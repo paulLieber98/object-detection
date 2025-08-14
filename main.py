@@ -22,14 +22,14 @@ for result in results: #iterate through each output from result object
         track_ids = result.boxes.id #accessing IDs
         
         #iterate through each detection
-        for i, class_idx in enumerate(class_indices):
+        for i, class_id_x in enumerate(class_indices):
             #check if this detection is a person (class 0)
-            if class_idx == 0: #0 = person in class indices 
+            if class_id_x == 0: #0 = person in class indices 
                 #add the corresponding ID to the list
-                if track_ids is not None and i < len(track_ids):
+                if track_ids is not None and i < len(track_ids): #check if ID exists + if index is in range
                     tracking_id = track_ids[i]
                     if tracking_id not in people_ids: #check if this ID is already in list
-                        if result.boxes.conf[i] > confidence_threshold: #check if confidence is above threshold
+                        if result.boxes.conf[i] > confidence_threshold: #check if confidence of person detected is above threshold
                             people_ids.append(tracking_id)
 
 print(f'ids of people: {people_ids}')
