@@ -3,10 +3,10 @@ import cv2 as cv
 from ultralytics import YOLO #for model
 
 #DEFINING MODEL
-model = YOLO("yolov8n.pt")
+model = YOLO("yolov8s.pt")
 
 #LOADING MODEL
-model.load("yolov8n.pt")
+model.load("yolov8s.pt")
 
 results = model.track(source=1, show=True) #track: shows IDs
 
@@ -33,8 +33,3 @@ for result in results: #iterate through each output from result object
                             people_ids.append(tracking_id)
 
 print(f'ids of people: {people_ids}')
-
-
-
-
-
