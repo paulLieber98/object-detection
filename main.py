@@ -8,8 +8,30 @@ model = YOLO("yolov8n.pt")
 #LOADING MODEL
 model.load("yolov8n.pt")
 
-# results = model.predict(source=1, show=True) #predict: track just no IDs
 results = model.track(source=1, show=True) #track: shows IDs
+
+#accessing IDs
+ids = []
+for result in results: #iterate through each output from result object
+    #if only a person label is detected, add ID to list
+    if result.boxes is not None and len(result.boxes) > 0:
+        #store class indices and IDs in variables
+        class_indices = result.boxes.cls #accessing class indices
+        track_ids = result.boxes.id #accessing IDs
+        
+        #iterate through each detection
+        for i, class_idx in enumerate(class_indices):
+            #check if this detection is a person (class 0)
+            if class_idx == 0: #0 = person in class indices 
+                #add the corresponding ID to the list
+                if track_ids is not None and i < len(track_ids):
+                    tracking_id = track_ids[i]
+                    if tracking_id not in ids: #check if this ID is already in list
+                        ids.append(tracking_id)
+
+print(f'ids of people: {ids}')
+
+
 
 
 
