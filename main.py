@@ -10,8 +10,10 @@ model.load("yolov8n.pt")
 
 results = model.track(source=1, show=True) #track: shows IDs
 
-#accessing IDs
-ids = []
+#accessing IDs + confidence threshold
+people_ids = []
+confidence_threshold = 0.9
+
 for result in results: #iterate through each output from result object
     #if only a person label is detected, add ID to list
     if result.boxes is not None and len(result.boxes) > 0:
@@ -26,10 +28,11 @@ for result in results: #iterate through each output from result object
                 #add the corresponding ID to the list
                 if track_ids is not None and i < len(track_ids):
                     tracking_id = track_ids[i]
-                    if tracking_id not in ids: #check if this ID is already in list
-                        ids.append(tracking_id)
+                    if tracking_id not in people_ids: #check if this ID is already in list
+                        if result.boxes.conf[i] > confidence_threshold: #check if confidence is above threshold
+                            people_ids.append(tracking_id)
 
-print(f'ids of people: {ids}')
+print(f'ids of people: {people_ids}')
 
 
 
